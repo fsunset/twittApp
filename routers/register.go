@@ -67,7 +67,7 @@ func insert(usr models.User) (string, error) {
 	usr.Password = string(encryptedPassword)
 
 	// Preparing Database & Collection Constants for this file, into which the insert will be done
-	db := database.MongoConnection.Database("twittappcluster")
+	db := database.MongoConnection.Database("twittAppDB")
 	collection := db.Collection("users")
 
 	// Inserting...

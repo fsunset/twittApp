@@ -18,7 +18,7 @@ func CheckExistentUser(email string) (models.User, bool, string) {
 	defer cancel()
 
 	// Preparing Database & Collection Constants for this file, into which the insert will be done
-	db := MongoConnection.Database("twittappcluster")
+	db := MongoConnection.Database("twittAppDB")
 	collection := db.Collection("users")
 
 	// Converting user's email into bson format
