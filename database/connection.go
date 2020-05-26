@@ -9,12 +9,14 @@ import (
 )
 
 // MongoConnection initializes connection
-var MongoConnection = databaseConnection()
+var MongoConnection = ConnectionToDB()
 var clientOptions = options.Client().ApplyURI("mongodb+srv://twittAppClusterUser:twittAppClusterPass20@twittappcluster-6ibps.mongodb.net/test?retryWrites=true&w=majority")
 
-func databaseConnection() *mongo.Client {
+// ConnectionToDB creates Db connection
+func ConnectionToDB() *mongo.Client {
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
+	// If existent; return error
 	if err != nil {
 		log.Fatal("Error on DB Init Connection : " + err.Error())
 		return client
@@ -28,6 +30,7 @@ func databaseConnection() *mongo.Client {
 func CheckConnection() bool {
 	err := MongoConnection.Ping(context.TODO(), nil)
 
+	// If existent; return error
 	if err != nil {
 		log.Fatal("Error on DB CheckConnection : " + err.Error())
 		return false

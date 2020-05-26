@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/fsunset/twittApp/middlewares"
+	"github.com/fsunset/twittApp/routers"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -13,11 +15,15 @@ import (
 func Handlers() {
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
-		PORT = "8080"
+		PORT = "9999"
 	}
 
 	router := mux.NewRouter()
 
+	// Set "register" path for routers.Register endpoint
+	router.HandleFunc("/register", middlewares.CheckingDB(routers.Register)).Methods("POST")
+
+	// Listen/Serve PORT
 	handler := cors.AllowAll().Handler(router)
 
 	log.Fatal(http.ListenAndServe(":"+PORT, handler))
