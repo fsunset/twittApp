@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// User handles user-structure
+// User handles User-structure
 type User struct {
 
 	/*
