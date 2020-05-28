@@ -30,7 +30,9 @@ func Handlers() {
 	).Methods("POST")
 	// Set "profile" path for routers.Profile endpoint
 	router.HandleFunc(
-		"/profile", middlewares.CheckingDB(middlewares.CheckingJWT(routers.Profile)),
+		"/profile", middlewares.CheckingDB(
+			middlewares.CheckingJWT(routers.Profile),
+		),
 	).Methods("GET")
 
 	// Listen/Serve PORT
