@@ -8,6 +8,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// Preparing Database & Collection Constants for this file, into which the insert will be done...
+
+// AppDB is the database for our app
+var AppDB = MongoConnection.Database("twittAppDB")
+
+// UsersCollection is the "users" collection within DB
+var UsersCollection = AppDB.Collection("users")
+
 // CheckExistentUser searches a user in DB by email
 func CheckExistentUser(email string) (models.User, bool, string) {
 
@@ -17,17 +25,15 @@ func CheckExistentUser(email string) (models.User, bool, string) {
 	// Cancelling context just before exiting this function
 	defer cancel()
 
-	// Preparing Database & Collection Constants for this file, into which the insert will be done
-	db := MongoConnection.Database("twittAppDB")
-	collection := db.Collection("users")
-
 	// Converting user's email into bson format
 	queryCondition := bson.M{"email": email}
 
-	// Querying DB for email and saving result into "existentUser"
+	// Set structure for profile
 	var existentUser models.User
-	err := collection.FindOne(ctx, queryCondition).Decode(&existentUser)
+	// Querying DB for email and saving result into "existentUser"
+	err := UsersCollection.FindOne(ctx, queryCondition).Decode(&existentUser)
 
+	// Get ID from existing returned user
 	usrID := existentUser.ID.Hex()
 
 	if err != nil {

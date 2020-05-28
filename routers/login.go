@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/fsunset/twittApp/database"
+	"github.com/fsunset/twittApp/jwt"
 	"github.com/fsunset/twittApp/models"
-	"github.com/fsunset/twittApp/routers/jwt"
 )
 
 // Login initializes logIn process for user, with their email/password

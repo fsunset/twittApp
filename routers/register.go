@@ -12,6 +12,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Preparing Database & Collection Constants for this file, into which the insert will be done...
+
+// AppDB is the database for our app
+var AppDB = database.MongoConnection.Database("twittAppDB")
+
+// UsersCollection is the "users" collection within DB
+var UsersCollection = AppDB.Collection("users")
+
 // Register sets new users into DB
 func Register(w http.ResponseWriter, r *http.Request) {
 
@@ -56,7 +64,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 func insert(usr models.User) (string, error) {
 
-	// Setting a 10 secs limit to already running DB-context (background)
+	// Setting a 10 secs limit to the already running DB-context (background)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	// Cancelling context just before exiting this function
@@ -66,12 +74,8 @@ func insert(usr models.User) (string, error) {
 	encryptedPassword, _ := bcrypt.GenerateFromPassword([]byte(usr.Password), bcrypt.DefaultCost)
 	usr.Password = string(encryptedPassword)
 
-	// Preparing Database & Collection Constants for this file, into which the insert will be done
-	db := database.MongoConnection.Database("twittAppDB")
-	collection := db.Collection("users")
-
 	// Inserting...
-	result, err := collection.InsertOne(ctx, usr)
+	result, err := UsersCollection.InsertOne(ctx, usr)
 
 	if err != nil {
 		return "", err
